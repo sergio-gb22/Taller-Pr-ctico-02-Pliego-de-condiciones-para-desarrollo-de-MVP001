@@ -1,10 +1,9 @@
 # Taller-Pr-ctico-02-Pliego-de-condiciones-para-desarrollo-de-MVP001
 
 ## *Consulta 1*
-for $critica in //Vehiculo[@Estado = "En ruta"]
+for $critica in //Vehiculo[//Estado = "En ruta"]
 let $bateria := $critica/Bateria
 let $matricula := $critica/Matricula
-let $modelo := $critica/Modelo
 let $html := 
   <html>
     <head>
@@ -18,10 +17,11 @@ let $html :=
         for $critica in //Vehiculos[@Estado = "En ruta"]
         let $bateria := data($critica/Bateria)
         let $matricula := data($critica/Matricula)
-        let $modelo := data($critica/Modelo)
         return
           <li>
             <strong>{ $matricula }</strong>
+            Matricula: {data($critica/Matricula)}
+            Bateria: {data($critica/Bateria)}
           </li>
       }
       </ol>
