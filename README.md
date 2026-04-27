@@ -1,39 +1,40 @@
 # Taller-Pr-ctico-02-Pliego-de-condiciones-para-desarrollo-de-MVP001
 
 ## *Consulta 1*
-for $critica in //Vehiculo[//Estado = "En ruta"]
-let $bateria := $critica/Bateria
-let $matricula := $critica/Matricula
-let $html := 
-  <html>
+let $html :=
+  <html lang="es">
     <head>
-      <title>Vehiculos con bateria critica</title>
+      <title>Vehículos con batería crítica</title>
       <meta charset="UTF-8"/>
     </head>
     <body>
-      <h1>Listado de Vehiculos con bateria critica</h1>
+      <h1>Vehículos con batería crítica (&lt;15%) y en ruta</h1>
       <ol>
       {
-        for $critica in //Vehiculos[@Estado = "En ruta"]
-        let $bateria := data($critica/Bateria)
-        let $matricula := data($critica/Matricula)
+        for $vehiculo in //Vehiculo[Estado = "En ruta"]
+        let $bateria := number($vehiculo/Bateria)
+        where $bateria < 15
         return
           <li>
-            <strong>{ $matricula }</strong>
-            Matricula: {data($critica/Matricula)}
-            Bateria: {data($critica/Bateria)}
+            <strong>{ data($vehiculo/Matricula) }</strong>
+            <ul>
+              <li>Modelo: { data($vehiculo/Modelo) }</li>
+              <li>Estado: { data($vehiculo/Estado) }</li>
+              <li>Batería: { $bateria }%</li>
+            </ul>
           </li>
       }
       </ol>
     </body>
   </html>
-where $bateria < 15
-return file:write("C:\Users\Sergio\Desktop\LDM\index.html",$html,
+return file:write(
+  "C:\Users\DAM1\Desktop\Taller2\consulta1.html",
+  $html,
   map {
     "method": "html",
     "version": "5.0",
-    "indent": "yes",
     "omit-xml-declaration": "yes",
-    "encoding": "UTF-8"
+    "encoding": "UTF-8",
+    "indent": "yes"
   }
 )
